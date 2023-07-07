@@ -99,7 +99,9 @@ def main():
     if config['clear_auth']:
         config.delete_refresh_token()
 
-    if config['log']:
+    if True:  # config['log']:
+        # import loggly.handlers
+        config['log'] = "/data/log/rtv-log/rtv.log"
         # Log request headers to the file (print hack only works on python 3.x)
         # from http import client
         # _http_logger = logging.getLogger('http.client')
@@ -108,10 +110,15 @@ def main():
         #     if args[0] != "header:":
         #         _http_logger.info(' '.join(args))
         # client.print = print_to_file
+        loggly_tag = "rtv-python"
+        loggly_api_key = "d4b5e5d3-bc1d-4c0c-811e-738d42e19d37"
         logging.basicConfig(
             level=logging.DEBUG,
             filename=config['log'],
             format='%(asctime)s:%(levelname)s:%(filename)s:%(lineno)d:%(message)s')
+        # lgy = loggly.handlers.HTTPSHandler(
+        #     'https://logs-01.loggly.com/inputs/' + loggly_api_key + '/tag/' + loggly_tag)
+        # logging.root.addHandler(lgy)
     else:
         # Add an empty handler so the logger doesn't complain
         logging.root.addHandler(logging.NullHandler())
